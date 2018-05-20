@@ -3,6 +3,14 @@
     <div class="header">
       <my-nav></my-nav>
     </div>
+
+    <el-alert class="extension-alert"
+      title="温馨提示：使用本网站，请先安装 "
+      type="warning"
+      close-text="知道了">
+      <a target="_blank" href="https://github.com/ChengOrangeJu/WebExtensionWallet">星云链官方钱包插件</a>
+    </el-alert>
+
     <div class="main">
       <router-view/>
     </div>
@@ -81,5 +89,12 @@ html,body {
   flex-direction: column;
   font-size: 14px;
   color: #34495e;
+}
+
+.extension-alert {
+  margin-bottom: 10px;
+}
+.extension-alert a {
+  color: #e6a23c;
 }
 </style>

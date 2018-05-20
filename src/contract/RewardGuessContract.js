@@ -17,7 +17,7 @@ var GuessItem = function (text) {
     this.from = "";
     this.rewardUnits = new BigNumber(0);
     this.rightNum = new BigNumber(0);
-    this.guessCount = new BigNumber(0);
+    this.guessCount = 0;
     this.beReward = false;
     this.winner = "";
   }
@@ -132,7 +132,7 @@ RewardGuessContract.prototype = {
     this._isOwner(from);
 
     // 转账提款
-    var result = Blockchain.transfer(address, value);
+    var result = Blockchain.transfer(address, value.times(nasToWei));
     if (!result) {
       throw new Error("transfer failed.");
     }
@@ -154,7 +154,7 @@ RewardGuessContract.prototype = {
     // 奖励总额
     var rewardTotal = new BigNumber(this.unit).times(rewardUnits);
     if (!value.eq(rewardTotal)) {
-      throw new Error("Please pay " + rewardTotal + "NAS.");
+      throw new Error("Please pay " + rewardTotal.div(nasToWei) + "NAS.");
     }
 
     // 正确数字
@@ -185,10 +185,10 @@ RewardGuessContract.prototype = {
 
     var guessTotal = new BigNumber(this.unit).times(new BigNumber(this.guessUnits));
     if (!value.eq(guessTotal)) {
-      throw new Error("Please pay " + guessTotal + "NAS.");
+      throw new Error("Please pay " + guessTotal.div(nasToWei) + "NAS.");
     }
 
-    guessItem.guessCount = guessItem.guessCount.plus(new BigNumber(1));
+    guessItem.guessCount += 1;
 
     if (guessNum.eq(guessItem.rightNum)) { // 猜中
       guessItem.beReward = true;
@@ -248,6 +248,7 @@ RewardGuessContract.prototype = {
     for (var i = 0; i < this.size; i++) {
       if (!this.beRewardKeys.get(i)) {
         var guessItem = this.allGuessMap.get(i);
+        delete guessItem.rightNum;
         unRewardGuess.push(guessItem);
       }
     }
@@ -262,12 +263,14 @@ RewardGuessContract.prototype = {
     for (var i = 0; i < len; i++) {
       var index = this.beRewardMap.get(this.beRewardSize - 1 - i);
       var guessItem = this.allGuessMap.get(index);
-      beRewardGuess.push(guessItem);
+      if (guessItem) {
+        beRewardGuess.push(guessItem);
+      }
     }
 
     return beRewardGuess;
   }
 };
 
-// n1qEok6MFuvMTDvLY3AwKmyUd7CqZbwhPTu
+// n21bn4tPKVxf4MUhuKPWZb9Y7NBJjrVskek
 module.exports = RewardGuessContract;
