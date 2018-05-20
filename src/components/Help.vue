@@ -1,10 +1,10 @@
 <template>
  <div class="help">
    <div class="rules">
-     <div class="">
+     <div class="title">
        游戏规则
      </div>
-     <div class="">
+     <div class="info">
        <p>1. 发起竞猜可以选择5-10个竞猜选项。比如：发起5个选项的竞猜，则竞猜选项包含1、2、3、4、5这几个数字，以此类推。</p>
        <p>2. 发起n个选项的竞猜，则发起人需支付0.01 * n 个NAS作为竞猜人的奖励。比如：发起5个选项的竞猜，则发起人需支付0.01 * 5 = 0.05 NAS,作为竞猜人的奖励。</p>
        <p>3. 竞猜人每次竞猜，需支付0.01 * 2 = 0.02个NAS作为发起人的奖励。</p>
@@ -14,8 +14,11 @@
      </div>
    </div>
    <div class="limit">
-     <div class="">
+     <div class="title">
        免责条款
+     </div>
+     <div class="info">
+
      </div>
    </div>
  </div>
@@ -27,4 +30,7 @@ export default {
 </script>
 
 <style scoped>
+.rules {
+  margin-bottom: 20px;
+}
 </style>

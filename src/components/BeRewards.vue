@@ -20,7 +20,7 @@
       <div class="answers">
         <span>正确答案</span>
         <el-button-group class="answer-options">
-           <el-button type="warning" disabled>1</el-button>
+           <el-button type="warning">1</el-button>
          </el-button-group>
       </div>
       <div class="tip">

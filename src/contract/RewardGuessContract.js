@@ -31,6 +31,7 @@ GuessItem.prototype = {
 var RewardGuessContract = function () {
   LocalContractStorage.defineProperties(this, {
     owner: null,
+    fee: null,
     unit: null, // 单位奖励（比如 0.01 nas）
     guessUnits: null, // 参与竞猜支付单位数
     size: null, // 竞猜项目总数
@@ -55,6 +56,7 @@ var RewardGuessContract = function () {
 RewardGuessContract.prototype = {
   init: function () {
     this.owner = Blockchain.transaction.from;
+    this.fee = new BigNumber(0.05);
     this.unit = new BigNumber(0.01);
     this.guessUnits = new BigNumber(2);
     this.size = new BigNumber(0);
@@ -83,6 +85,17 @@ RewardGuessContract.prototype = {
     this.owner = address;
   },
 
+  setFee: function (fee) {
+    fee = new BigNumber(fee);
+    var from = Blockchain.transaction.from;
+    this._isOwner(from);
+
+    this.fee = fee;
+  },
+  getFee: function () {
+    return this.fee;
+  },
+
   setUnit: function (unit) {
     unit = new BigNumber(unit);
     var from = Blockchain.transaction.from;
@@ -90,9 +103,19 @@ RewardGuessContract.prototype = {
 
     this.unit = unit;
   },
-
   getUnit: function () {
     return this.unit;
+  },
+
+  setGuessUnits: function (guessUnits) {
+    guessUnits = new BigNumber(guessUnits)
+    var from = Blockchain.transaction.from;
+    this._isOwner(from);
+
+    this.guessUnits = guessUnits;
+  },
+  getGuessUnits: function () {
+    return this.guessUnits;
   },
 
   withdraw: function (address, value) {
@@ -240,5 +263,6 @@ RewardGuessContract.prototype = {
   }
 };
 
-// testnet: n1gKm8KZaHFiDUiRLxos9NNrBNttuLRpG5W 9853e373461c90d17a7d8a8b2a7ef49154182e9f444fcadd53bd3c37aef10205
 module.exports = RewardGuessContract;
+
+// testnet: n1thjS2sF38Mk5FCfZt5phutEWBaCaRgDNs f7c6f9575de32aeee3697e1b76514984d93537e4941f60cdab53f7100d10903a
