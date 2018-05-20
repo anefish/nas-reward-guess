@@ -1,5 +1,7 @@
 "use strict";
 
+var nasToWei = new BigNumber(10).pow(new BigNumber(18));
+
 var GuessItem = function (text) {
   if (text) {
     var obj = JSON.parse(text);
@@ -57,10 +59,13 @@ RewardGuessContract.prototype = {
   init: function () {
     this.owner = Blockchain.transaction.from;
     this.fee = new BigNumber(0.05);
-    this.unit = new BigNumber(0.01);
+    this.unit = new BigNumber(0.01).times(nasToWei);
     this.guessUnits = new BigNumber(2);
-    this.size = new BigNumber(0);
-    this.beRewardSize = new BigNumber(0);
+    this.size = 0;
+    this.beRewardSize = 0;
+  },
+
+  test: function () {
   },
 
   _isOwner: function (address) {
@@ -101,10 +106,10 @@ RewardGuessContract.prototype = {
     var from = Blockchain.transaction.from;
     this._isOwner(from);
 
-    this.unit = unit;
+    this.unit = unit.times(nasToWei);
   },
   getUnit: function () {
-    return this.unit;
+    return new BigNumber(this.unit).div(nasToWei);
   },
 
   setGuessUnits: function (guessUnits) {
@@ -143,17 +148,17 @@ RewardGuessContract.prototype = {
   // 发起竞猜
   createGuess: function (rewardUnits) {
     var from = Blockchain.transaction.from;
-    var value = Blockchain.transaction.value;
+    var value = new BigNumber(Blockchain.transaction.value);
     rewardUnits = new BigNumber(rewardUnits);
 
     // 奖励总额
-    var rewardTotal = this.unit.times(rewardUnits);
+    var rewardTotal = new BigNumber(this.unit).times(rewardUnits);
     if (!value.eq(rewardTotal)) {
-      throw new Error("Please pay" + rewardTotal + "NAS.");
+      throw new Error("Please pay " + rewardTotal + "NAS.");
     }
 
     // 正确数字
-    var rightNum = parseInt(Math.random().times(rewardUnits)).plus(new BigNumber(1));
+    var rightNum = new BigNumber(parseInt(Math.random() * rewardUnits) + 1);
 
     var guessItem = new GuessItem();
     guessItem.index = this.size;
@@ -163,13 +168,13 @@ RewardGuessContract.prototype = {
 
     var index = this.size;
     this.allGuessMap.set(index, guessItem);
-    this.size = this.size.plus(new BigNumber(1));
+    this.size += 1;
   },
 
   // 参与竞猜
   submitGuess: function (guessIndex, guessNum) {
     var from = Blockchain.transaction.from;
-    var value = Blockchain.transaction.value;
+    var value = new BigNumber(Blockchain.transaction.value);
     guessIndex = new BigNumber(guessIndex);
     guessNum = new BigNumber(guessNum);
 
@@ -178,9 +183,9 @@ RewardGuessContract.prototype = {
       throw new Error("The guessing is over.");
     }
 
-    var guessTotal = this.unit.times(this.guessUnits);
+    var guessTotal = new BigNumber(this.unit).times(new BigNumber(this.guessUnits));
     if (!value.eq(guessTotal)) {
-      throw new Error("Please pay" + guessTotal + "NAS.");
+      throw new Error("Please pay " + guessTotal + "NAS.");
     }
 
     guessItem.guessCount = guessItem.guessCount.plus(new BigNumber(1));
@@ -192,18 +197,19 @@ RewardGuessContract.prototype = {
       var index = this.beRewardSize;
       this.beRewardMap.set(index, guessIndex);
       this.beRewardKeys.set(guessIndex, true);
-      this.beRewardSize = this.beRewardSize.plus(new BigNumber(1));
+      this.beRewardSize += 1;
 
       // 支付奖励
+      var minusFee = new BigNumber(1).minus(new BigNumber(this.fee)); // 减去手续费后剩余比例
       var winner = from;
       var creater = guessItem.from;
-      var winnerRewardAmount = this.unit.times(guessItem.rewardUnits);
-      var createrRewardAmount = this.unit.times(this.guessUnits).times(guessItem.guessCount);
-      // 手续费
+      var winnerRewardAmount = new BigNumber(this.unit).times(guessItem.rewardUnits);
+      var createrRewardAmount = new BigNumber(this.unit).times(new BigNumber(this.guessUnits)).times(guessItem.guessCount);
+      // 减去手续费
       if (createrRewardAmount > winnerRewardAmount) {
-        createrRewardAmount = createrRewardAmount.times(new BigNumber(0.95));
+        createrRewardAmount = createrRewardAmount.times(minusFee);
       }
-      winnerRewardAmount = winnerRewardAmount.times(new BigNumber(0.95));
+      winnerRewardAmount = winnerRewardAmount.times(minusFee);
 
       // 支付发起者奖励
       var result1 = Blockchain.transfer(creater, createrRewardAmount);
@@ -263,6 +269,5 @@ RewardGuessContract.prototype = {
   }
 };
 
+// n1qEok6MFuvMTDvLY3AwKmyUd7CqZbwhPTu
 module.exports = RewardGuessContract;
-
-// testnet: n1thjS2sF38Mk5FCfZt5phutEWBaCaRgDNs f7c6f9575de32aeee3697e1b76514984d93537e4941f60cdab53f7100d10903a

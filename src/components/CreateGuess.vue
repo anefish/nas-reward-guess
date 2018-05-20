@@ -79,7 +79,7 @@ export default {
       window.nebPay.queryPayInfo(this.serialNumber, {
         callback: window.IS_TESTNET ? window.NebPay.config.testnetUrl : window.NebPay.config.mainnetUrl
       })
-        .then(function (resp) {
+        .then((resp) => {
           // resp is a JSON string
           console.log('tx result: ', resp)
           const respObject = JSON.parse(resp)
