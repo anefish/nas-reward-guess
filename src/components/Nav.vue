@@ -1,12 +1,13 @@
 <template>
   <div class="my-nav">
-    <div class="logo">
-    </div>
+    <!-- <div class="logo">
+    </div> -->
+    <img src="../assets/logo.jpg" alt="" class="logo">
     <el-menu router :default-active="activeIndex" class="my-menu" mode="horizontal" @select="handleSelect">
-      <el-menu-item index="unrewards">正在竞猜</el-menu-item>
-      <el-menu-item index="berewards">往期竞猜</el-menu-item>
-      <el-menu-item index="createguess">发起竞猜</el-menu-item>
-      <el-menu-item index="help">帮助</el-menu-item>
+      <el-menu-item index="/unrewards">正在竞猜</el-menu-item>
+      <el-menu-item index="/berewards">往期竞猜</el-menu-item>
+      <el-menu-item index="/createguess">发起竞猜</el-menu-item>
+      <el-menu-item index="/help">帮助</el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -15,12 +16,21 @@
 export default {
   data () {
     return {
-      activeIndex: 'unrewards'
+    }
+  },
+  computed: {
+    activeIndex () {
+      return '/' + this.$route.path.split('/')[1]
+    }
+  },
+  watch: {
+    '$route' (to, from) {
+      return '/' + to.path.split('/')[1]
     }
   },
   methods: {
     handleSelect (key, keyPath) {
-      console.log(key, keyPath)
+      // console.log(key, keyPath)
     }
   }
 }
@@ -37,8 +47,8 @@ export default {
 .logo {
   width: 160px;
   height: 120px;
-  background-image: url('../assets/logo.jpg');
-  background-size: 100% 100%;
+  /* background-image: url(../assets/logo.jpg);
+  background-size: 100% 100%; */
 }
 
 .my-menu {

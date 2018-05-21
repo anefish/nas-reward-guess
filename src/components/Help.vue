@@ -1,6 +1,6 @@
 <template>
  <div class="help">
-   <div class="info">
+   <div class="desc">
      大玩家是一款基于星云链开发的数字竞猜类区块链小游戏。在本游戏中，玩家可以发起竞猜，也可以参与别人发起的竞猜，发起和参与竞猜将有机会获得数量不等的NAS奖励。本游戏所有核心业务逻辑及数据，将永久运行和保存在基于星云区块链的智能合约中。合约代码开源，不可篡改，游戏简单有趣，公平公正。
    </div>
    <div class="rules">
@@ -34,10 +34,15 @@ export default {
 </script>
 
 <style scoped>
-.info {
+.desc {
   margin-bottom: 30px;
 }
 .rules {
   margin-bottom: 30px;
+}
+
+.info {
+  font-size: 14px;
+  color: #34495e;
 }
 </style>

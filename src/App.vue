@@ -15,9 +15,9 @@
       <router-view/>
     </div>
     <div class="footer">
-      <p>Powered by Nebulas</p>
+      <p><span>Powered by Nebulas</span><a target="_blank" href="https://explorer.nebulas.io/#/tx/125571a155f3855f8f6b331847b426bbb09ff684f6de48901886ec3869e14f0c">合约</a> </p>
       <br>
-      <p>© 大玩家 Copyright by: Anefish</p>
+      <p>© 大玩家 Copyright by: anefish</p>
     </div>
   </div>
 </template>
@@ -89,6 +89,12 @@ html,body {
   flex-direction: column;
   font-size: 14px;
   color: #34495e;
+}
+
+.footer a {
+  text-decoration: none;
+  color: inherit;
+  margin-left: 10px;
 }
 
 .extension-alert {

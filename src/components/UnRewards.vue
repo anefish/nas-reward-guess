@@ -40,7 +40,7 @@ export default {
       }
 
       window.neb.api.call(from, window.dappAddress, value, nonce, gasPrice, gasLimit, contract).then((resp) => {
-        console.log('getUnRewardGuess data result: ', JSON.parse(resp.result))
+        // console.log('getUnRewardGuess data result: ', JSON.parse(resp.result))
         this.unRewardGuess = JSON.parse(resp.result)
       }).catch(function (err) {
         console.log('error: ', err.message)

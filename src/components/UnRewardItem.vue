@@ -25,6 +25,9 @@ export default {
       unit: 0.01,
       guessUnits: 2,
 
+      serialNumber: null,
+      intervalQuery: null,
+
       guessNum: 1
     }
   },
@@ -33,7 +36,7 @@ export default {
     onSubmitGuess () {
       const guessTotal = this.unit * this.guessUnits
 
-      this.$confirm('您选择的数字是' + this.guessNum + '，本次竞猜您需支付' + guessTotal + 'NAS.', '提示', {
+      this.$confirm('您选择的数字是' + this.guessNum + '，本次竞猜您需支付' + guessTotal + 'NAS。(因钱包交易为异步执行，支付成功后请手动刷新网页。)', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
@@ -77,7 +80,7 @@ export default {
           if (respObject.code === 0) {
             console.log('succeed!!!!!!!!!!!!!!!!!!!!!!!!')
             clearInterval(this.intervalQuery)
-            // window.location.reload()
+            window.location.reload()
           }
         })
         .catch(function (err) {

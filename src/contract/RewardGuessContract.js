@@ -203,10 +203,10 @@ RewardGuessContract.prototype = {
       var minusFee = new BigNumber(1).minus(new BigNumber(this.fee)); // 减去手续费后剩余比例
       var winner = from;
       var creater = guessItem.from;
-      var winnerRewardAmount = new BigNumber(this.unit).times(guessItem.rewardUnits);
-      var createrRewardAmount = new BigNumber(this.unit).times(new BigNumber(this.guessUnits)).times(guessItem.guessCount);
+      var winnerRewardAmount = new BigNumber(this.unit).times(new BigNumber(guessItem.rewardUnits));
+      var createrRewardAmount = new BigNumber(this.unit).times(new BigNumber(this.guessUnits)).times(new BigNumber(guessItem.guessCount));
       // 减去手续费
-      if (createrRewardAmount > winnerRewardAmount) {
+      if (createrRewardAmount.gt(winnerRewardAmount)) {
         createrRewardAmount = createrRewardAmount.times(minusFee);
       }
       winnerRewardAmount = winnerRewardAmount.times(minusFee);
@@ -272,5 +272,6 @@ RewardGuessContract.prototype = {
   }
 };
 
-// n21bn4tPKVxf4MUhuKPWZb9Y7NBJjrVskek
+// testnet: n1gJr25aKzzVFRQGEfjyTWy48J5BNN2N2Ws 113061d050c7c94ed7a677fabb7d503e54a3fee83dac0a76ae5836b8a0eac069
+// mainnet: n1jABBVxUkhKSpVMbMpKdFrK3C8S8VBNTwx 125571a155f3855f8f6b331847b426bbb09ff684f6de48901886ec3869e14f0c
 module.exports = RewardGuessContract;
