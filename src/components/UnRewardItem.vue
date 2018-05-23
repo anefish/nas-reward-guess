@@ -10,7 +10,7 @@
        </el-radio-group>
     </div>
     <div class="tip">
-      猜中答案你将获得 <span class="amount">0.05NAS</span> 奖励
+      猜中答案你将获得 <span class="amount">{{unit * Number(unRewardItem.rewardUnits)}}NAS</span> 奖励
     </div>
     <div class="submit">
       <el-button type="warning" round icon="el-icon-time" @click="onSubmitGuess">我要竞猜</el-button>
