@@ -40,7 +40,7 @@ export default {
   data () {
     return {
       unit: 0.01,
-      guessUnits: 2,
+      guessUnits: 1,
 
       beRewardGuess: []
     }

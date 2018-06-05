@@ -125,6 +125,7 @@ RewardGuessContract.prototype = {
 
   withdraw: function (address, value) {
     value = new BigNumber(value);
+    // TODO: 限制额度，不能提取正在进行的竞猜费用
 
     this._verifyAddress(address);
 
